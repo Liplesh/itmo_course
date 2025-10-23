@@ -65,12 +65,12 @@ public class TechServController {
         return ResponseEntity.ok(techServService.getReservedTechServs());
     }
 
-    //Получить все свободные услуги до какой либо даты
-    @GetMapping(path = ("/not_reserved_until/{date}"), produces = "application/json")
+    //Получить все предоставленные услуги до переданной либо даты
+    @GetMapping(path = ("/reserved_until/{date}"), produces = "application/json")
     public ResponseEntity<List<TechServResponseDTO>> getAllReservedTechServUntil(
             @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime date) {
         log.info("GET All Reserved Tech Serv Request with date = {}", date);
-        return ResponseEntity.ok(techServService.getTechServsNotSignetUntil(date));
+        return ResponseEntity.ok(techServService.getTechServsSignetUntil(date));
     }
 
     //Обновить услугу в бд

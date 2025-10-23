@@ -41,20 +41,19 @@ public class TechServService {
         return null;
     }
 
-    //Получить все свободные услуги до какой либо даты
-    public List<TechServResponseDTO> getTechServsNotSignetUntil(LocalDateTime date){
+    //Получить все занятые услуги до какой либо даты
+    public List<TechServResponseDTO> getTechServsSignetUntil(LocalDateTime date){
         //TODO найти все услуги, без даты бронирования или с датой раньше переданной (?)
         return null;
     }
 
     //Создать бронь
-    public TechServResponseDTO reserveTechServ(Long techServId) {
+    public void reserveTechServ(Long techServId) {
         /*
         TODO проверить по id, свободна ли услуга,
         если нет брони - добавить дату бронирования, id пользователя и поменять флаг reserved = true
         если бронь есть - то (?)выкидываем исключение
         */
-        return null;
 
     }
 
