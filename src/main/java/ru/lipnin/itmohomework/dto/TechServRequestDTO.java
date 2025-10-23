@@ -1,59 +1,35 @@
 package ru.lipnin.itmohomework.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.*;
+import ru.lipnin.itmohomework.constants.DifficultyLevel;
 
-public class TechServRequestDTO {
+import java.time.LocalDateTime;
 
-    @NotNull
-    @Positive
-    private Long id;
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public record TechServRequestDTO(
 
-    @NotNull
-    @Pattern(regexp = "^\\s*[А-Яа-яЁё]+\\s*$")
-    private String name;
+        @NotNull
+        @Positive
+        Long id,
 
-    @NotNull
-    @NotBlank
-    @NotEmpty
-    private String description;
+        @NotBlank
+        String name,
 
-    @NotNull
-    @NotBlank
-    @NotEmpty
-    @Email
-    private String email;
+        @NotBlank
+        String description,
 
-    public Long getId() {
-        return id;
-    }
+        @Future
+        @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        LocalDateTime signetAt, //дата бронирования
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+        boolean reserve,
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+        @NotNull
+        DifficultyLevel diffLevel
+) {
 }
 
 

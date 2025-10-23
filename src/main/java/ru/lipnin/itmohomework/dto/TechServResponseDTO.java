@@ -1,14 +1,24 @@
 package ru.lipnin.itmohomework.dto;
 
-import jakarta.validation.constraints.*;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import ru.lipnin.itmohomework.constants.DifficultyLevel;
 
-public class TechServResponseDTO {
+import java.time.LocalDateTime;
 
-    private Long id;
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public record TechServResponseDTO(
 
-    private String name;
+        Long id,
 
-    private String description;
+        String name,
 
-    private String email;
+        String description,
+
+        LocalDateTime signedAt,
+
+        boolean reserve,
+
+        DifficultyLevel diffLevel
+) {
 }
