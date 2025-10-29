@@ -2,23 +2,14 @@ package ru.lipnin.itmohomework.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import ru.lipnin.itmohomework.constants.DifficultyLevel;
-
-import java.time.LocalDateTime;
+import ru.lipnin.itmohomework.constants.Category;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record TechServResponseDTO(
-
-        Long id,
-
+public record ServiceResponseDTO(
         String name,
-
         String description,
-
-        LocalDateTime signedAt,
-
-        boolean reserve,
-
-        DifficultyLevel diffLevel
+        int duration,
+        int price,
+        Category category
 ) {
 }
