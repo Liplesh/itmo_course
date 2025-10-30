@@ -13,17 +13,20 @@ import java.util.Optional;
 @Repository
 public interface BeautyServiceRepository extends JpaRepository<BeautyService, Long> {
 
-    List<BeautyService> findAllBeautyServiceByCategory(Category category);
+    List<BeautyService> findAllBeautyServiceByCategoryAndRemovedFalse(Category category);
 
     Optional<BeautyService> findByIdAndRemovedFalse(Long id);
 
-    @Query("SELECT s FROM BeautyService s " +
+    @Query(nativeQuery = true,
+     value ="SELECT * FROM services s " +
             "WHERE NOT EXISTS (" +
-            "    SELECT 1 FROM Appointment a " +
-            "    WHERE a.service = s " +
-            "    AND a.appointmentTime = :appointmentTime " +
-            "    AND a.status NOT IN ('COMPLETED', 'CANCELLED')" +
-            ")")
+            "SELECT 1 " +
+            "FROM appointment a " +
+            "WHERE a.service_id = s.id " +
+            "AND :appointmentTime >= a.appointment_time " +
+            "AND :appointmentTime <= a.appointment_time + INTERVAL '1 MINUTE' * s.duration " +
+            "AND a.status NOT IN ('COMPLETED', 'CANCELLED')) " +
+            "AND s.removed = false")
     List<BeautyService> findAllNotReservedServicesByTime(LocalDateTime appointmentTime);
 
     @Query (nativeQuery = true,

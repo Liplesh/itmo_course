@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.lipnin.itmohomework.entity.Appointment;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,5 +19,14 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
             )
     List<Appointment> findAllAppointmentByClientNameAndRemovedFalse(String clientName);
 
+    List<Appointment> findAllAppointmentByAppointmentTimeAndRemovedFalse(LocalDateTime appointmentTime);
+
     Optional<Appointment> findByIdAndRemovedFalse(Long id);
+
+    @Query("SELECT SUM(s.price) FROM Appointment a " +
+            "JOIN a.service s " +
+            "WHERE (CAST(:from AS timestamp) IS NULL OR a.appointmentClose >= :from)" +
+            "AND a.appointmentClose <= :to " +
+            "AND a.status = 'COMPLETED'")
+    BigDecimal findAllEarnedMoneyByPeriod(LocalDateTime from, LocalDateTime to);
 }
