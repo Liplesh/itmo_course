@@ -1,7 +1,6 @@
 package ru.lipnin.itmohomework.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.lipnin.itmohomework.constants.Category;
-import ru.lipnin.itmohomework.dto.ServiceRequestDTO;
-import ru.lipnin.itmohomework.dto.ServiceResponseDTO;
-import ru.lipnin.itmohomework.entity.BeautyService;
+import ru.lipnin.itmohomework.dto.service.ServiceRequestDTO;
+import ru.lipnin.itmohomework.dto.service.ServiceResponseDTO;
 import ru.lipnin.itmohomework.services.BeautyServService;
 
 import java.net.URI;
@@ -28,7 +26,7 @@ import java.util.List;
 public class BeautyServiceController {
     private final BeautyServService beautyService;
 
-    @PostMapping(path = "/create")
+    @PostMapping()
     public ResponseEntity<?> createTechService(@Valid @RequestBody ServiceRequestDTO serviceRequestDTO) {
         log.info("POST Creating Tech Serv Request: {}", serviceRequestDTO);
         URI uri = URI.create("/api/v1/service?id=" +

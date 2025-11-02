@@ -1,4 +1,4 @@
-package ru.lipnin.itmohomework.dto;
+package ru.lipnin.itmohomework.dto.exception;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

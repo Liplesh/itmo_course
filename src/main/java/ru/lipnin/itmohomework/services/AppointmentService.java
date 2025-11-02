@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.lipnin.itmohomework.constants.Status;
-import ru.lipnin.itmohomework.dto.AppointmentEarningsRequestDTO;
-import ru.lipnin.itmohomework.dto.AppointmentEarningsResponseDTO;
-import ru.lipnin.itmohomework.dto.AppointmentRequestDTO;
-import ru.lipnin.itmohomework.dto.AppointmentResponseDTO;
+import ru.lipnin.itmohomework.dto.appointment.AppointmentEarningsResponseDTO;
+import ru.lipnin.itmohomework.dto.appointment.AppointmentRequestDTO;
+import ru.lipnin.itmohomework.dto.appointment.AppointmentResponseDTO;
+import ru.lipnin.itmohomework.dto.appointment.AppointmentUpdateRequestDTO;
 import ru.lipnin.itmohomework.entity.Appointment;
 import ru.lipnin.itmohomework.entity.BeautyService;
 import ru.lipnin.itmohomework.exception.AppointmentException;
@@ -74,35 +74,28 @@ public class AppointmentService {
     }
 
     //Снять бронь
-    public AppointmentResponseDTO cancelAppointment(Long appointmentId) {
+    public void cancelAppointment(Long appointmentId) {
         Appointment appointment = appointmentRepository.findByIdAndRemovedFalse(appointmentId)
                 .orElseThrow(() -> new AppointmentException(HttpStatus.NOT_FOUND, "Запись не найдена"));
 
         appointment.setStatus(Status.CANCELLED);
         appointment.setAppointmentClose(LocalDateTime.now());
-        //Как тут сделать правильно логику, если далее зануляю ссылку и в мапере упадет нпе?
-        AppointmentResponseDTO appointmentResponseDTO = mapper.mapToDTO(appointment);
-        appointment.setService(null);
         appointmentRepository.save(appointment);
-        return appointmentResponseDTO;
     }
 
     //Обновить время брони
-    public AppointmentResponseDTO updateAppointment(Long appointmentId, AppointmentRequestDTO appointmentRequestDTO) {
-        Appointment appointment = appointmentRepository.findByIdAndRemovedFalse(appointmentId)
+    public AppointmentResponseDTO updateAppointment(AppointmentUpdateRequestDTO updateRequestDTO) {
+        Appointment appointment = appointmentRepository.findByIdAndRemovedFalse(updateRequestDTO.id())
                 .orElseThrow(() -> new AppointmentException(HttpStatus.NOT_FOUND, "Запись не найдена"));
 
-        //Здесь лучше сделать еще одно дто? Я просто хочу обновить время записи,
-        // а передаю целиком все поля, что может запутать
-        appointment.setAppointmentTime(appointmentRequestDTO.appointmentTime());
+        appointment.setAppointmentTime(updateRequestDTO.appointmentTime());
         appointmentRepository.save(appointment);
         return mapper.mapToDTO(appointment);
     }
 
     //Получить выручку по переданной дате
-    public AppointmentEarningsResponseDTO findAllEarnedMoneyByPeriod(AppointmentEarningsRequestDTO earningsRequestDTO) {
-        LocalDateTime from = earningsRequestDTO.from();
-        LocalDateTime to = earningsRequestDTO.to() == null ? LocalDateTime.now() : earningsRequestDTO.to();
+    public AppointmentEarningsResponseDTO findAllEarnedMoneyByPeriod(LocalDateTime from, LocalDateTime to) {
+        to = to == null ? LocalDateTime.now() : to;
 
         BigDecimal allEarnedMoneyByPeriod = appointmentRepository.findAllEarnedMoneyByPeriod(from, to);
         if (allEarnedMoneyByPeriod == null) {

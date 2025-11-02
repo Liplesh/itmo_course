@@ -1,8 +1,8 @@
 package ru.lipnin.itmohomework.mapper;
 
 import org.springframework.stereotype.Service;
-import ru.lipnin.itmohomework.dto.AppointmentRequestDTO;
-import ru.lipnin.itmohomework.dto.AppointmentResponseDTO;
+import ru.lipnin.itmohomework.dto.appointment.AppointmentRequestDTO;
+import ru.lipnin.itmohomework.dto.appointment.AppointmentResponseDTO;
 import ru.lipnin.itmohomework.entity.Appointment;
 
 @Service

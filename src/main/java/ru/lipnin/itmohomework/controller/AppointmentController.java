@@ -9,11 +9,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.lipnin.itmohomework.dto.AppointmentEarningsRequestDTO;
-import ru.lipnin.itmohomework.dto.AppointmentEarningsResponseDTO;
-import ru.lipnin.itmohomework.dto.AppointmentRequestDTO;
-import ru.lipnin.itmohomework.dto.AppointmentResponseDTO;
-import ru.lipnin.itmohomework.entity.Appointment;
+import ru.lipnin.itmohomework.dto.appointment.AppointmentEarningsResponseDTO;
+import ru.lipnin.itmohomework.dto.appointment.AppointmentRequestDTO;
+import ru.lipnin.itmohomework.dto.appointment.AppointmentResponseDTO;
+import ru.lipnin.itmohomework.dto.appointment.AppointmentUpdateRequestDTO;
 import ru.lipnin.itmohomework.services.AppointmentService;
 
 import java.net.URI;
@@ -28,7 +27,7 @@ import java.util.List;
 public class AppointmentController {
     private final AppointmentService appointmentService;
 
-    @PostMapping(path = "/create")
+    @PostMapping()
     public ResponseEntity<?> createAppointment(@Validated @RequestBody AppointmentRequestDTO appointmentRequestDTO) {
         log.info("Create appointment request: {}", appointmentRequestDTO);
         URI uri = URI.create("/api/v1/appointment?id=" +
@@ -51,27 +50,29 @@ public class AppointmentController {
         return ResponseEntity.ok(allAppointmentsByClientName);
     }
 
-    @PutMapping(path = "/cancel")
-    public ResponseEntity<AppointmentResponseDTO> cancelAppointment(@NotNull @Positive @RequestParam Long id) {
+    @PutMapping(path = "/cancellation")
+    public ResponseEntity<?> cancelAppointment(@NotNull @Positive @RequestParam Long id) {
         log.info("Cancel appointment: {}", id);
-        return ResponseEntity.ok(appointmentService.cancelAppointment(id));
+        appointmentService.cancelAppointment(id);
+        return ResponseEntity.ok().build();
     }
 
-    @PutMapping(path = "/update")
+    @PutMapping()
     public ResponseEntity<AppointmentResponseDTO> updateAppointment(
-            @Validated @RequestBody AppointmentRequestDTO appointmentRequestDTO,
-            @NotNull @Positive @RequestParam Long id) {
-        log.info("Update appointment: {}", id);
-        return ResponseEntity.ok( appointmentService.updateAppointment(id, appointmentRequestDTO));
+            @Validated @RequestBody AppointmentUpdateRequestDTO appointmentRequestDTO) {
+        log.info("Update appointment: {}", appointmentRequestDTO);
+        return ResponseEntity.ok(appointmentService.updateAppointment(appointmentRequestDTO));
     }
 
     //Нужно ли куда-то в другой контроллер, если ДТО отличается?
     //Правильно ли здесь использовать PUT
-    @PutMapping(path = "/money")
+    @GetMapping(path = "/money")
     public ResponseEntity<AppointmentEarningsResponseDTO> getMoneyByPeriod(
-            @RequestBody AppointmentEarningsRequestDTO appointmentEarningsRequestDTO) {
-        log.info("Get money by period: {}", appointmentEarningsRequestDTO);
-        return ResponseEntity.ok(appointmentService.findAllEarnedMoneyByPeriod(appointmentEarningsRequestDTO));
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime start,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime end) {
+        log.info("Get money by period: {}", start);
+        log.info("Get money by period: {}", end);
+        return ResponseEntity.ok(appointmentService.findAllEarnedMoneyByPeriod(start, end));
     }
 
 }

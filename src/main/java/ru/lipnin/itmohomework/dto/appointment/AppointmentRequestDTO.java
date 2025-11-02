@@ -1,4 +1,4 @@
-package ru.lipnin.itmohomework.dto;
+package ru.lipnin.itmohomework.dto.appointment;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

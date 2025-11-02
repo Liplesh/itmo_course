@@ -1,8 +1,8 @@
 package ru.lipnin.itmohomework.mapper;
 
 import org.springframework.stereotype.Service;
-import ru.lipnin.itmohomework.dto.ServiceRequestDTO;
-import ru.lipnin.itmohomework.dto.ServiceResponseDTO;
+import ru.lipnin.itmohomework.dto.service.ServiceRequestDTO;
+import ru.lipnin.itmohomework.dto.service.ServiceResponseDTO;
 import ru.lipnin.itmohomework.entity.BeautyService;
 
 @Service
