@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ru.lipnin.itmohomework.constants.Status;
+import ru.lipnin.itmohomework.security.entity.ApplicationUser;
 
 import java.time.LocalDateTime;
 
@@ -41,6 +42,12 @@ public class Appointment {
     @Column(name = "note", length = 1000)
     private String note;
 
+    @Column(name = "price")
+    private int price;
+
+    @Column(name = "price_note")
+    private String priceNote;
+
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -53,6 +60,10 @@ public class Appointment {
     private boolean removed;
 
     @ManyToOne
+    @JoinColumn(name = "service_id")
     private BeautyService service;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private ApplicationUser user;
 }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.lipnin.itmohomework.constants.Category;
@@ -26,6 +27,7 @@ import java.util.List;
 public class BeautyServiceController {
     private final BeautyServService beautyService;
 
+    @Secured({"ROLE_ADMIN", "ROLE_SUPER_USER"})
     @PostMapping()
     public ResponseEntity<?> createTechService(@Valid @RequestBody ServiceRequestDTO serviceRequestDTO) {
         log.info("POST Creating Tech Serv Request: {}", serviceRequestDTO);

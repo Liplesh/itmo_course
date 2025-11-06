@@ -9,6 +9,7 @@ import ru.lipnin.itmohomework.entity.BeautyService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface BeautyServiceRepository extends JpaRepository<BeautyService, Long> {
@@ -38,4 +39,6 @@ public interface BeautyServiceRepository extends JpaRepository<BeautyService, Lo
             "AND a.status NOT IN ('COMPLETED', 'CANCELLED')" +
             "AND s.id = :id")
     boolean isServiceReserved(Long id, LocalDateTime appointmentTime);
+
+    Set<BeautyService> findAllByIdInAndRemovedFalse(List<Long> ids);
 }
