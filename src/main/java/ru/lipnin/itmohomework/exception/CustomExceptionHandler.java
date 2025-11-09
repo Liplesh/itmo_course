@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.lipnin.itmohomework.dto.exception.CustomExceptionDTO;
-import ru.lipnin.itmohomework.security.exception.CastomSecurityException;
+import ru.lipnin.itmohomework.security.exception.CustomSecurityException;
 
 import java.time.LocalDateTime;
 
@@ -30,12 +30,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {DiscountException.class})
     protected ResponseEntity<Object> handleDiscountException(DiscountException ex, WebRequest request) {
         CustomExceptionDTO exceptionDTO = new CustomExceptionDTO(ex.getMessage(), LocalDateTime.now());
-        return handleExceptionInternal(ex, exceptionDTO, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+        return handleExceptionInternal(ex, exceptionDTO, new HttpHeaders(), ex.getHttpStatus(), request);
     }
 
-    @ExceptionHandler(value = {CastomSecurityException.class})
-    protected ResponseEntity<Object> handleSecurityException(CastomSecurityException ex, WebRequest request) {
+    @ExceptionHandler(value = {CustomSecurityException.class})
+    protected ResponseEntity<Object> handleSecurityException(CustomSecurityException ex, WebRequest request) {
         CustomExceptionDTO exceptionDTO = new CustomExceptionDTO(ex.getMessage(), LocalDateTime.now());
-        return handleExceptionInternal(ex, exceptionDTO, new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+        return handleExceptionInternal(ex, exceptionDTO, new HttpHeaders(), ex.getHttpStatus(), request);
     }
 }

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 import ru.lipnin.itmohomework.constants.Category;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record ServiceRequestDTO (
+public record BeautyServiceRequestDTO(
 
         @NotNull
         @NotBlank

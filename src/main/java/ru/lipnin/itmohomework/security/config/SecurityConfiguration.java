@@ -75,10 +75,12 @@ public class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/account/registration", "/api/v1/account/login")// запросы
+                        .requestMatchers("/api/v1/users/registration", "/api/v1/users/login")// запросы
                         .not().authenticated()// разрешены всем
                         .requestMatchers("/api/v1/discount") // запросы
                         .hasAnyRole("SUPER_USER", "ADMIN") // разрешены только пользователям с указанными ролями
+                        .requestMatchers("/api/v1/account")
+                        .hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

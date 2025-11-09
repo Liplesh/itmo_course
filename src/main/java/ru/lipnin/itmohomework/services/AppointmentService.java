@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.lipnin.itmohomework.client.notification.NotificationClient;
 import ru.lipnin.itmohomework.constants.Status;
 import ru.lipnin.itmohomework.dto.appointment.AppointmentEarningsResponseDTO;
 import ru.lipnin.itmohomework.dto.appointment.AppointmentRequestDTO;
@@ -23,6 +24,7 @@ import ru.lipnin.itmohomework.repository.BeautyServiceRepository;
 import ru.lipnin.itmohomework.repository.DiscountRepository;
 import ru.lipnin.itmohomework.security.entity.ApplicationUser;
 import ru.lipnin.itmohomework.security.repository.ApplicationUserRepository;
+import ru.lipnin.itmohomework.services.notification.MessageService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -43,6 +45,9 @@ public class AppointmentService {
     private final ApplicationUserRepository applicationUserRepository;
     private final AppointmentMapper mapper;
     private final DiscountRepository discountRepository;
+    private final NotificationClient notificationClient;
+    private final MessageService messageService;
+    private final DiscountService discountService;
 
     //Создать бронь
     public Long createAppointment(AppointmentRequestDTO appointmentRequestDTO) {
@@ -114,6 +119,7 @@ public class AppointmentService {
 
         appointment.setStatus(Status.CONFIRMED);
         appointmentRepository.save(appointment);
+        notificationClient.notifyUser(appointment.getUser(), messageService.getConfirmMessage(appointment));
     }
 
     //Снять свою бронь пользователем
@@ -136,6 +142,9 @@ public class AppointmentService {
         appointment.setStatus(Status.CANCELLED);
         appointment.setAppointmentClose(LocalDateTime.now());
         appointmentRepository.save(appointment);
+        discountService.createPersonalDiscount(appointment.getUser().getId(),
+                15.0f, "Извинение за отмену брони", 3);
+        notificationClient.notifyUser(appointment.getUser(), messageService.getSorryMessage(appointment.getUser()));
     }
 
     //Обновить время брони (метод пользователя)
@@ -147,6 +156,8 @@ public class AppointmentService {
 
         appointment.setAppointmentTime(updateRequestDTO.appointmentTime());
         appointmentRepository.save(appointment);
+        notificationClient.notifyUser(appointment.getUser(), messageService.getUpdatedMessage(appointment));
+
         return mapper.mapToDTO(appointment);
     }
 
@@ -157,6 +168,7 @@ public class AppointmentService {
 
         appointment.setAppointmentTime(updateRequestDTO.appointmentTime());
         appointmentRepository.save(appointment);
+        notificationClient.notifyUser(appointment.getUser(), messageService.getUpdatedMessage(appointment));
         return mapper.mapToDTO(appointment);
     }
 

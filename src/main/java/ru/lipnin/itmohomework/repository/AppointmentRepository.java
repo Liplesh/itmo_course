@@ -39,4 +39,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     BigDecimal findAllEarnedMoneyByPeriod(LocalDateTime from, LocalDateTime to);
 
     Set<Appointment> findAllByIdInAndRemovedFalse(List<Long> listId);
+
+    @Query("SELECT a FROM Appointment a " +
+            "WHERE a.status = 'COMPLETED' " +
+            "AND a.removed = false " +
+            "AND a.appointmentClose >= :start " +
+            "AND a.appointmentClose < :end")
+    Set<Appointment> findAllCompletedAppointmentByDate(LocalDateTime start, LocalDateTime end);
 }

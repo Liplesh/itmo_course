@@ -1,14 +1,14 @@
 package ru.lipnin.itmohomework.mapper;
 
 import org.springframework.stereotype.Service;
-import ru.lipnin.itmohomework.dto.service.ServiceRequestDTO;
-import ru.lipnin.itmohomework.dto.service.ServiceResponseDTO;
+import ru.lipnin.itmohomework.dto.service.BeautyServiceRequestDTO;
+import ru.lipnin.itmohomework.dto.service.BeautyServiceResponseDTO;
 import ru.lipnin.itmohomework.entity.BeautyService;
 
 @Service
 public class BeautyServiceMapper {
 
-    public BeautyService mapToEntity(ServiceRequestDTO serviceRequestDTO) {
+    public BeautyService mapToEntity(BeautyServiceRequestDTO serviceRequestDTO) {
         return BeautyService.builder()
                 .name(serviceRequestDTO.name())
                 .description(serviceRequestDTO.description())
@@ -18,8 +18,8 @@ public class BeautyServiceMapper {
                 .build();
     }
 
-    public ServiceResponseDTO mapToDTO(BeautyService beautyService) {
-        return new ServiceResponseDTO(
+    public BeautyServiceResponseDTO mapToDTO(BeautyService beautyService) {
+        return new BeautyServiceResponseDTO(
                 beautyService.getName(),
                 beautyService.getDescription(),
                 beautyService.getDuration(),

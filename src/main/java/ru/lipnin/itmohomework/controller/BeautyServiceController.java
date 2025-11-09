@@ -11,8 +11,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.lipnin.itmohomework.constants.Category;
-import ru.lipnin.itmohomework.dto.service.ServiceRequestDTO;
-import ru.lipnin.itmohomework.dto.service.ServiceResponseDTO;
+import ru.lipnin.itmohomework.dto.service.BeautyServiceRequestDTO;
+import ru.lipnin.itmohomework.dto.service.BeautyServiceResponseDTO;
 import ru.lipnin.itmohomework.services.BeautyServService;
 
 import java.net.URI;
@@ -29,7 +29,7 @@ public class BeautyServiceController {
 
     @Secured({"ROLE_ADMIN", "ROLE_SUPER_USER"})
     @PostMapping()
-    public ResponseEntity<?> createTechService(@Valid @RequestBody ServiceRequestDTO serviceRequestDTO) {
+    public ResponseEntity<?> createTechService(@Valid @RequestBody BeautyServiceRequestDTO serviceRequestDTO) {
         log.info("POST Creating Tech Serv Request: {}", serviceRequestDTO);
         URI uri = URI.create("/api/v1/service?id=" +
                 beautyService.createService(serviceRequestDTO));
@@ -37,24 +37,24 @@ public class BeautyServiceController {
     }
 
     @GetMapping
-    public ResponseEntity<ServiceResponseDTO> getServiceById(@NotNull @Positive @RequestParam Long id) {
+    public ResponseEntity<BeautyServiceResponseDTO> getServiceById(@NotNull @Positive @RequestParam Long id) {
         log.info("GET Service by ID: {}", id);
-        ServiceResponseDTO serviceResponseDTO = beautyService.getServiceById(id);
+        BeautyServiceResponseDTO serviceResponseDTO = beautyService.getServiceById(id);
         return ResponseEntity.ok(serviceResponseDTO);
     }
 
     @GetMapping(path = "/all")
-    public ResponseEntity<List<ServiceResponseDTO>> getAllServicesByCategory(@NotNull @RequestParam Category category) {
+    public ResponseEntity<List<BeautyServiceResponseDTO>> getAllServicesByCategory(@NotNull @RequestParam Category category) {
         log.info("GET Service by Category: {}", category);
-        List<ServiceResponseDTO> allServiceByCategory = beautyService.getAllServiceByCategory(category);
+        List<BeautyServiceResponseDTO> allServiceByCategory = beautyService.getAllServiceByCategory(category);
         return ResponseEntity.ok(allServiceByCategory);
     }
 
     @GetMapping(path = "/not_reserved")
-    public ResponseEntity<List<ServiceResponseDTO>> getAllNotReservedServicesByDate(
+    public ResponseEntity<List<BeautyServiceResponseDTO>> getAllNotReservedServicesByDate(
             @NotNull @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm") LocalDateTime date) {
         log.info("GET Service By Date: {}", date);
-        List<ServiceResponseDTO> allServiceByCategory = beautyService.getAllNotReservedServiceByDate(date);
+        List<BeautyServiceResponseDTO> allServiceByCategory = beautyService.getAllNotReservedServiceByDate(date);
         return ResponseEntity.ok(allServiceByCategory);
     }
 

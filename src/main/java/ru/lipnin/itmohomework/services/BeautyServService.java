@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import ru.lipnin.itmohomework.constants.Category;
-import ru.lipnin.itmohomework.dto.service.ServiceRequestDTO;
-import ru.lipnin.itmohomework.dto.service.ServiceResponseDTO;
+import ru.lipnin.itmohomework.dto.service.BeautyServiceRequestDTO;
+import ru.lipnin.itmohomework.dto.service.BeautyServiceResponseDTO;
 import ru.lipnin.itmohomework.entity.BeautyService;
 import ru.lipnin.itmohomework.exception.BeautyServiceException;
 import ru.lipnin.itmohomework.mapper.BeautyServiceMapper;
@@ -23,21 +23,21 @@ public class BeautyServService {
     private final BeautyServiceMapper beautyServiceMapper;
 
     //Создать услуг
-    public Long createService(ServiceRequestDTO serviceRequestDTO) {
+    public Long createService(BeautyServiceRequestDTO serviceRequestDTO) {
         BeautyService beautyService = beautyServiceMapper.mapToEntity(serviceRequestDTO);
 
         servRepository.save(beautyService);
         return beautyService.getId();
     }
 
-    public ServiceResponseDTO getServiceById(Long id) {
+    public BeautyServiceResponseDTO getServiceById(Long id) {
         BeautyService beautyService = servRepository.findByIdAndRemovedFalse(id)
                 .orElseThrow(() -> new BeautyServiceException(HttpStatus.NOT_FOUND, "Услуга не найдена"));
         return beautyServiceMapper.mapToDTO(beautyService);
     }
 
     //Получить все услуги по категории
-    public List<ServiceResponseDTO> getAllServiceByCategory(Category category) {
+    public List<BeautyServiceResponseDTO> getAllServiceByCategory(Category category) {
         List<BeautyService> beautyServiceByCategory = servRepository.findAllBeautyServiceByCategoryAndRemovedFalse(category);
         if (beautyServiceByCategory.isEmpty()) {
             throw new BeautyServiceException(HttpStatus.NOT_FOUND, "Услуги не найдены");
@@ -46,7 +46,7 @@ public class BeautyServService {
     }
 
     //Получить все свободные услуги
-    public List<ServiceResponseDTO> getAllNotReservedServiceByDate(LocalDateTime appointmentDate) {
+    public List<BeautyServiceResponseDTO> getAllNotReservedServiceByDate(LocalDateTime appointmentDate) {
         List<BeautyService> allNotReservedServicesByTime = servRepository.findAllNotReservedServicesByTime(appointmentDate);
         if (allNotReservedServicesByTime.isEmpty()) {
             throw new BeautyServiceException(HttpStatus.NOT_FOUND, "Свободные услуги не найдены");

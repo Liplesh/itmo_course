@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.lipnin.itmohomework.constants.DiscountType;
 import ru.lipnin.itmohomework.dto.discont.DiscountRequestDTO;
 import ru.lipnin.itmohomework.entity.Appointment;
 import ru.lipnin.itmohomework.entity.BeautyService;
@@ -18,6 +19,7 @@ import ru.lipnin.itmohomework.repository.DiscountRepository;
 import ru.lipnin.itmohomework.security.entity.ApplicationUser;
 import ru.lipnin.itmohomework.security.repository.ApplicationUserRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -46,6 +48,21 @@ public class DiscountService {
         discount.setUser(currentUser);
         discountRepository.save(discount);
         return discount.getId();
+    }
+
+    public void createPersonalDiscount(Long id, Float discount, String description, int monthPeriod) {
+        DiscountRequestDTO discountRequestDTO = new DiscountRequestDTO(
+                description,
+                discount,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMonths(monthPeriod),
+                DiscountType.PERSON,
+                List.of(id),
+                null,
+                null
+        );
+
+        createDiscount(discountRequestDTO);
     }
 
     //Метод создания сущности скидки для конкретных людей

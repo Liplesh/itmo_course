@@ -12,9 +12,11 @@ import java.util.Set;
 @Repository
 public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, Long> {
 
-    List<ApplicationUser> findByUserRoleAndRemovedFalse(UserRole role);
+    List<ApplicationUser> findByUserRoleRoleTypeAndRemovedFalse(UserRole.RoleType role);
 
     Set<ApplicationUser> findAllByIdInAndRemovedFalse(List<Long> listId);
+
+    Optional<ApplicationUser> findByIdAndRemovedFalse(Long id);
 
     Optional<ApplicationUser> findByUsername(String name);
 
