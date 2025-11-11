@@ -7,10 +7,6 @@ import org.springframework.stereotype.Component;
 import ru.lipnin.itmohomework.client.dwh.DwhClient;
 import ru.lipnin.itmohomework.dto.dwh.DwhRequestStatisticDto;
 import ru.lipnin.itmohomework.dto.dwh.DwhResponseDto;
-import ru.lipnin.itmohomework.dto.notification.GeneralNotificationDto;
-import ru.lipnin.itmohomework.dto.notification.UserNotificationDto;
-import ru.lipnin.itmohomework.dto.notification.UserSecNotificationDto;
-import ru.lipnin.itmohomework.security.entity.ApplicationUser;
 
 @Profile("feign")
 @Slf4j

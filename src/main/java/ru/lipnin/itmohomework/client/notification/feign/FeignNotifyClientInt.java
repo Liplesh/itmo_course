@@ -4,14 +4,14 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import ru.lipnin.itmohomework.config.FeignConfiguration;
+import ru.lipnin.itmohomework.config.DefaultFeignConfiguration;
 import ru.lipnin.itmohomework.dto.notification.GeneralNotificationDto;
 import ru.lipnin.itmohomework.dto.notification.UserNotificationDto;
 import ru.lipnin.itmohomework.dto.notification.UserSecNotificationDto;
 
 @FeignClient(value = "notification",
         url = "http://localhost:8082/api/v1/notifier",
-        configuration = FeignConfiguration.class
+        configuration = DefaultFeignConfiguration.class
 //        fallback = NotificationFeignClientFallback.class
 )
 @Component
