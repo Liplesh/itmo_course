@@ -9,8 +9,7 @@ import ru.lipnin.itmohomework.dto.dwh.DwhRequestStatisticDto;
 import ru.lipnin.itmohomework.dto.dwh.DwhResponseDto;
 
 @FeignClient(value = "dwh",
-//        url = "http://localhost:8083/api/v1/dwh",
-        url = "http://localhost:8082/api/v1/notifier",
+        url = "http://localhost:8083/api/v1/dwh",
         configuration = DwhFeignConfiguration.class
 )
 @Component

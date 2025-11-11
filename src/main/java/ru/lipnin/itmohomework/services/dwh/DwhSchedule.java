@@ -26,42 +26,21 @@ public class DwhSchedule {
     private final DwhClient dwhClient;
     private final DwhMapper dwhMapper;
 
-    /*
-    Не совсем понял второй пункт условия
-    2. Если запрос не был передан, в ответ вернулся не пустой список, данные необходимо отправить повторно
-    Если не передан запрос, как вернуть не пустой список
-     */
-
-//    @Async("dwh-executor") // задачи будут выполняться отдельным пулом
-//    @Scheduled(cron = "0 0 23 * * *", zone = "Europe/Moscow")
-//    public void sendStatistic() {
-//        LocalDateTime now = LocalDateTime.now();
-//        LocalDateTime startOfDay =  now.toLocalDate().atStartOfDay();
-//        LocalDateTime startOfNextDay = startOfDay.plusDays(1);
-//        Set<Appointment> appointments = appointmentRepository.findAllCompletedAppointmentByDate(startOfDay, startOfNextDay);
-//        if (appointments.isEmpty()) {
-//            //Что тут лучше сделать, если за день не было закрытых например услуг?
-//            return;
-//        }
-//
-//        List<DwnAppointmentDto> list = appointments.stream().map(dwhMapper::mapToDto).toList();
-//        dwhClient.putStatistic(new DwhRequestStatisticDto(now, list));
-//    }
-
     @Async("dwh-executor") // задачи будут выполняться отдельным пулом
-    @Scheduled(cron = "0 43 0 * * *", zone = "Europe/Moscow")
+    @Scheduled(cron = "0 0 23 * * *", zone = "Europe/Moscow")
     public void sendStatistic() {
-//        LocalDateTime now = LocalDateTime.now();
-//        LocalDateTime startOfDay =  now.toLocalDate().atStartOfDay();
-//        LocalDateTime startOfNextDay = startOfDay.plusDays(1);
-//        Set<Appointment> appointments = appointmentRepository.findAllCompletedAppointmentByDate(startOfDay, startOfNextDay);
-//        if (appointments.isEmpty()) {
-//            //Что тут лучше сделать, если за день не было закрытых например услуг?
-//            return;
-//        }
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startOfDay =  now.toLocalDate().atStartOfDay();
+        LocalDateTime startOfNextDay = startOfDay.plusDays(1);
+        Set<Appointment> appointments = appointmentRepository.findAllCompletedAppointmentByDate(startOfDay, startOfNextDay);
+        if (appointments.isEmpty()) {
+            //Что тут лучше сделать, если за день не было закрытых например услуг?
+            return;
+        }
 
-//        List<DwnAppointmentDto> list = appointments.stream().map(dwhMapper::mapToDto).toList();
-        dwhClient.putStatistic(new DwhRequestStatisticDto(null, null));
+        List<DwnAppointmentDto> list = appointments.stream().map(dwhMapper::mapToDto).toList();
+        dwhClient.putStatistic(new DwhRequestStatisticDto(now, list));
     }
+
 
 }
